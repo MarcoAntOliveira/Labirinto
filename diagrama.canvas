@@ -1,0 +1,16 @@
+{
+	"nodes":[
+		{"id":"cc8d42022f755aeb","x":-560,"y":-160,"width":250,"height":180,"type":"text","text":"Pacman"},
+		{"id":"18567a9b1d0ab472","x":0,"y":-160,"width":250,"height":60,"type":"text","text":"labrinto"},
+		{"id":"ee5464c5bc9e0c50","x":-560,"y":-680,"width":250,"height":220,"type":"text","text":"Avaliação de intenção\n\n-  posição válida?\n- já foi verificado?\n- "},
+		{"id":"6ff009e48295d50f","x":-957,"y":-920,"width":250,"height":60,"type":"text","text":" Arvore de decisão"},
+		{"id":"0efe5706382899b4","x":-957,"y":-570,"width":250,"height":170,"type":"text","text":"Próxima posição\n\n- escolher nó\n- verificar nó válido"}
+	],
+	"edges":[
+		{"id":"90cb2bc48be55275","fromNode":"cc8d42022f755aeb","fromSide":"right","toNode":"18567a9b1d0ab472","toSide":"left"},
+		{"id":"95c9486638eb5cc6","fromNode":"cc8d42022f755aeb","fromSide":"top","toNode":"ee5464c5bc9e0c50","toSide":"bottom"},
+		{"id":"dcd2eec4208ed03c","fromNode":"6ff009e48295d50f","fromSide":"bottom","toNode":"0efe5706382899b4","toSide":"top"},
+		{"id":"4ce22f2b2c47f50f","fromNode":"0efe5706382899b4","fromSide":"bottom","toNode":"cc8d42022f755aeb","toSide":"left"},
+		{"id":"cd8181c887cb6831","fromNode":"ee5464c5bc9e0c50","fromSide":"top","toNode":"6ff009e48295d50f","toSide":"right"}
+	]
+}
