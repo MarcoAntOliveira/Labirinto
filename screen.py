@@ -2,6 +2,7 @@
 import random
 import pygame
 from random_maze import maze
+from tree import *
 
 AMARELO = (255, 255, 0)
 PRETO = (0, 0, 0)
@@ -9,7 +10,7 @@ VELOCIDADE = 1
 AZUL = (0, 0, 255)
 
 width, height = 40, 30
-
+tree = BinaryTree()
 class Cenario:
     def __init__(self, tamanho, pacman) -> None:
         self.pacman = pacman
@@ -64,8 +65,12 @@ class Pacman:
     #             self.pacman.aceitar_movimento()
 
     def calcular_regras(self):
-        self.coluna_intencao = self.coluna + self.vel_x
+        # self.coluna_intencao = self.coluna + self.vel_x
         self.linha_intencao= self.linha + self.vel_y
+        if self.coluna_intencao == self.coluna:
+               self.coluna_intencao = self.coluna + self.vel_x
+             
+
 
         self.centro_x = int(self.coluna*self.tamanho + self.raio)
         self.centro_y = int(self.linha*self.tamanho + self.raio)
@@ -110,6 +115,8 @@ class Pacman:
     #                 self.vel_y = 0
     #             elif e.key == pygame.K_UP:
     #                 self.vel_y = 0
+    def processar_eventos
+
     def aceitar_movimento(self):
         self.linha = self.linha_intencao
         self.coluna = self.coluna_intencao
