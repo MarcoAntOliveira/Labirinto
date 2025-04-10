@@ -2,4 +2,5 @@
 .vs/
 .vscode/
 __pycache__
-/amb4/
+amb4/
+amb/

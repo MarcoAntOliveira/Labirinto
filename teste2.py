@@ -24,7 +24,7 @@ while running:
     screen.fill("black")
 
     pygame.draw.circle(screen, "red", player_pos, 40)
-    # passando o mapeamento de botoes do teclado sendo dt 
+    # passando o mapeamento de botoes do teclado sendo dt
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
         player_pos.y -= 300 * dt
