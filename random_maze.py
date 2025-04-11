@@ -24,9 +24,8 @@ import random
 #     return maze
 
 
-
-WIDTH = 5  # Width of the maze (must be odd).
-HEIGHT = 5  # Height of the maze (must be odd).
+WIDTH = 11  # Width of the maze (must be odd).
+HEIGHT = 11  # Height of the maze (must be odd).
 assert WIDTH % 2 == 1 and WIDTH >= 3
 assert HEIGHT % 2 == 1 and HEIGHT >= 3
 SEED = 1
@@ -35,7 +34,9 @@ random.seed(SEED)
 # Use these characters for displaying the maze:
 EMPTY = 0
 MARK = '@'
-WALL = 2  # Character 2 is '█'
+WALL = 1  # Character 2 is '█'
+START = 2
+END = 3
 NORTH, SOUTH, EAST, WEST = 'n', 's', 'e', 'w'
 
 # Create the filled-in maze data structure to start:
@@ -92,14 +93,11 @@ def visit(x, y):
 hasVisited = [(1, 1)]
 visit(1, 1)
 
+
+# Mark the start and end points
+maze[1][1] = START
+maze[HEIGHT - 2][WIDTH - 2] = END
+
 # Display the final resulting maze
 temp_maze = [''.join(str(cell) for cell in row) for row in maze]
 print('\n'.join(temp_maze))
-
-
-def print_maze(maze):
-    for row in maze:
-        print("".join(["#" if cell == 1 else " " for cell in row]))
-
-width, height = 40, 30
-print_maze(maze)

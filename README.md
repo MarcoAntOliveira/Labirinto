@@ -17,6 +17,19 @@ Habilidade desenvolvida: compreender como utilizar os métodos de busca na resol
 Caso esteja com dificuldade em representar o mapa em uma árvore para busca, segue uma breve explicação abaixo:
 [explicação](https://www.youtube.com/watch?v=C8otuQJB60c&t=7s)
 
+### Busca em Largura
+
+- Expande o nó raiz e em seguida todos os sucessores
+do nó raiz. Depois, os sucessores desses nós, e assim
+por diante.
+
+### Busca em profundidade
+ - Expande o nó mais profundo na borda atual da
+árvore.
+-  Não havendo mais sucessores, a busca retorna à
+próxima profundidade acima que não foi
+explorada.
+
 # Pacman
 Este repositório é dedicado ao desenvolvimento do clássico jogo Pacman, com o objetivo de explorar conceitos de programação de jogos e interação com bibliotecas gráficas.
 
@@ -45,3 +58,19 @@ Classe responsável por gerenciar as ações e comportamentos do personagem prin
 
 #### calcular
 *determinar os movimentos possiveis que o personagem pode realizar*
+
+
+
+```python
+def calcular_regras(self):
+
+col = self.pacman.coluna_intencao
+
+lin = self.pacman.linha_intencao
+
+if 0 <= col <= 5 and 0 <= lin <= 5:
+
+if self.matriz[lin][col] != 2:
+
+self.pacman.aceitar_movimento()
+```

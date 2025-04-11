@@ -1,3 +1,5 @@
+from random_maze import *
+from collections import deque
 class No:
     def __init__(self, value, left=None, right=None, up=None, down=None):
         self.pos = value
@@ -66,6 +68,58 @@ def imprimir_folhas(no):
         imprimir_folhas(no.up_child)
         imprimir_folhas(no.down_child)
 # Função principal (main) para testes
+
+class BFS:
+    def __init__(self, maze, linha_inicial, coluna_inicial):
+        self.maze = maze
+        self.inicio = (linha_inicial, coluna_inicial)
+        self.visitados = set()
+        self.caminho = {}  # para reconstruir o caminho se quiser
+        self.tree = BinaryTree()
+
+
+        
+
+    # def procura_saida(self):
+    #     fila = deque()
+    #     fila.append(self.inicio)
+    #     self.visitados.add(self.inicio)
+
+    #     while fila:
+    #         linha, coluna = fila.popleft()
+
+    #         if self.eh_saida(linha, coluna):
+    #             print("Saída encontrada!")
+    #             return (linha, coluna)
+
+    #         # Vizinhos: cima, baixo, esquerda, direita
+    #         for dl, dc in [(-1,0), (1,0), (0,-1), (0,1)]:
+    #             nova_linha = linha + dl
+    #             nova_coluna = coluna + dc
+    #             nova_pos = (nova_linha, nova_coluna)
+
+    #             if self.posicao_valida(nova_linha, nova_coluna) and nova_pos not in self.visitados:
+    #                 fila.append(nova_pos)
+    #                 self.visitados.add(nova_pos)
+    #                 self.caminho[nova_pos] = (linha, coluna)  # de onde veio
+
+    #     print("Saída não encontrada.")
+    #     return None
+
+    def eh_saida(self, linha, coluna):
+        # você pode definir a saída como qualquer critério, por exemplo:
+        return self.maze[linha][coluna] == 3  # onde 3 representa a saída
+
+    def posicao_valida(self, linha, coluna):
+        linhas = len(self.maze)
+        colunas = len(self.maze[0])
+        return (
+            0 <= linha < linhas and
+            0 <= coluna < colunas and
+            self.maze[linha][coluna] != 2  # 2 representa parede
+        )
+
+
 if __name__ == "__main__":
     arvore = BinaryTree()
 
