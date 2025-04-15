@@ -1,8 +1,6 @@
-import random
 import pygame
-from random_maze import *
-from tree import BinaryTree, BFS
-
+from random_maze import maze
+from bfs import BFS
 
 
 AMARELO = (255, 255, 0)
@@ -19,6 +17,7 @@ class Cenario:
         self.pacman = pac
         self.tamanho = tamanho
         self.matriz = maze
+        self.tree = BinaryTree()
 
     def pintar_coluna(self, tela, numero_linha, linha):
         for numero_coluna, coluna in enumerate(linha):
@@ -26,15 +25,17 @@ class Cenario:
             y = numero_linha * self.tamanho
 
             if coluna == 1:  # parede
-                pygame.draw.rect(tela, AZUL, (x, y, self.tamanho, self.tamanho), 0)
+               pygame.draw.rect(tela, AZUL, (x, y, self.tamanho, self.tamanho), 0)
             elif coluna == 0:  # caminho vazio
-                pygame.draw.circle(tela, AMARELO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
+               pygame.draw.circle(tela, AMARELO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
             elif coluna == 2:  # início
-                pygame.draw.circle(tela, VERDE, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
+               pygame.draw.circle(tela, VERDE, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
             elif coluna == 3:  # fim
-                pygame.draw.circle(tela, ROSA, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
+               pygame.draw.circle(tela, ROSA, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
+            elif [numero_linha, numero_coluna] in self.tree.searched :
+               pygame.draw.circle(tela, VERMELHO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
             else:
-                pygame.draw.circle(tela, AMARELO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
+               pygame.draw.circle(tela, AMARELO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
 
     def pintar(self, tela):
         for numero_linha, linha in enumerate(self.matriz):
@@ -122,7 +123,7 @@ class Pacman:
         self.centro_y = screen.get_height() / 7
         self.tamanho =  screen.get_width()//30
         self.raio = self.tamanho // 2
-        self.tree = BinaryTree()
+
 
 
         self.vel_x = 0
@@ -151,20 +152,20 @@ class Pacman:
       responsável por fazer a pintura do personagem na tela
 
       """
-        pygame.draw.circle(screen, AMARELO, (self.centro_x, self.centro_y), self.raio)
+      pygame.draw.circle(screen, AMARELO, (self.centro_x, self.centro_y), self.raio)
 
-        #desenho boca
-        canto_boca = (self.centro_x, self.centro_y)
-        labio_superior = (self.centro_x + self.raio, self.centro_y - self.raio)
-        labio_inferior = (self.centro_x + self.raio , self.centro_y)
-        pontos = [canto_boca, labio_superior, labio_inferior]
-        pygame.draw.polygon(tela,PRETO, pontos, 0)
+      #desenho boca
+      canto_boca = (self.centro_x, self.centro_y)
+      labio_superior = (self.centro_x + self.raio, self.centro_y - self.raio)
+      labio_inferior = (self.centro_x + self.raio , self.centro_y)
+      pontos = [canto_boca, labio_superior, labio_inferior]
+      pygame.draw.polygon(tela,PRETO, pontos, 0)
 
-        #desenho olho
-        olho_x =  int(self.centro_x + self.raio/5)
-        olho_y = int(self.centro_y - self.raio*0.50)
-        olho_raio = int(self.raio/10)
-        pygame.draw.circle(tela, PRETO, (olho_x, olho_y), olho_raio, 0)
+      #desenho olho
+      olho_x =  int(self.centro_x + self.raio/5)
+      olho_y = int(self.centro_y - self.raio*0.50)
+      olho_raio = int(self.raio/10)
+      pygame.draw.circle(tela, PRETO, (olho_x, olho_y), olho_raio, 0)
 
 
     def aceitar_movimento(self):
@@ -190,27 +191,27 @@ class Pacman:
 
       if maze[self.linha + 1][self.coluna] != 2:
         self.tree.inserir_no((self.linha+1, self.coluna))
-       if maze[self.linha -1 ][self.coluna] != 2:
+      if maze[self.linha -1 ][self.coluna] != 2:
         self.tree.inserir_no((self.linha - 1, self.coluna))
-       if maze[self.linha ][self.coluna + 1 ] != 2:
+      if maze[self.linha ][self.coluna + 1 ] != 2:
         self.tree.inserir_no((self.linha, self.coluna + 1))
       if maze[self.linha][self.coluna - 1] != 2:
-        self.tree.inserir_no((self.linha, self.coluna - 1))
+         self.tree.inserir_no((self.linha, self.coluna - 1))
 
 
 
-    def adicionar_posicoes(self);
+    def adicionar_posicoes(self):
         """
         Adiciona a posição atual do personagem a lista de posições procuradas
         """
-       self.tree.searched.append([self.linha, self.coluna])
+        self.tree.searched.append([self.linha, self.coluna])
 
     def aceitar_movimento(self):
       """
       Se o movimento for valido, ele modifica a posição do personagem
       """
-        self.linha = int(self.linha_intencao)
-        self.coluna = int(self.coluna_intencao)
+      self.linha = int(self.linha_intencao)
+      self.coluna = int(self.coluna_intencao)
 
     def processar_eventos_mouse(self, eventos):
         delay = 100
