@@ -38,7 +38,7 @@ class BFS:
                     fila.append(vizinho)
                     self.visitados.add(vizinho)
                     self.caminho[vizinho] = atual  # para reconstruir o caminho depois
-
+        
 # Função main para testar
 def main():
 

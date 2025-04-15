@@ -1,6 +1,8 @@
 import pygame
 from random_maze import maze
 from bfs import BFS
+from tree import WIDTH, HEIGHT, BinaryTree
+
 
 
 AMARELO = (255, 255, 0)
@@ -123,6 +125,7 @@ class Pacman:
         self.centro_y = screen.get_height() / 7
         self.tamanho =  screen.get_width()//30
         self.raio = self.tamanho // 2
+        self.searched = []
 
 
 
@@ -184,6 +187,7 @@ class Pacman:
 
 
     def checa_posicoes(self):
+      
       """
       Checa as posições disponiveis de acordo com a posição relativa do personagem
       no labrinto.  primeiro verifica embaixo, depois em cima , direita e esquerda.
