@@ -4,13 +4,14 @@ from bfs import BFS
 from tree import WIDTH, HEIGHT, BinaryTree
 from cores import *
 import random
+from dfs import DFS
 
 class Cenario:
     def __init__(self, tamanho, pac) -> None:
         self.pacman = pac
         self.tamanho = tamanho
         self.matriz = maze
-        self.tree = BinaryTree()
+
 
     def pintar_coluna(self, tela, numero_linha, linha):
         for numero_coluna, coluna in enumerate(linha):
@@ -49,32 +50,43 @@ class Pacman:
         # Inicializa o Pacman na posição de início (2,2)
         self.linha = 1
         self.coluna = 1
-        self.bfs = BFS(maze, self.linha, self.coluna)
+        # self.bfs = BFS(maze, self.linha, self.coluna)
+        self.dfs = DFS(maze, self.linha, self.coluna)
         self.centro_x = screen.get_width() // len(maze)
         self.centro_y = screen.get_height() // len(maze)
 
         self.tamanho = screen.get_width()//30
         self.raio = self.tamanho // 2
 
-        self.bfs.executar()  # Executa o BFS para encontrar o caminho
+        # self.bfs.executar()  # Executa o BFS para encontrar o caminho
+        self.dfs.executar()  # Executa o BFS para encontrar o caminho
         self.coluna_intencao = self.coluna
         self.linha_intencao = self.linha
 
 
 
+    # def movimentar(self):
+    #     """
+    #     Move o agente para o próximo passo baseado na fila da BFS.
+    #     """
+
+    #     if self.bfs.caminho:
+    #       no = self.bfs.caminho.popleft()
+    #       self.linha_intencao, self.coluna_intencao = no.pos
+    #       self.bfs.caminho_percorrido.append(no.pos)
+
+    #     else:
+    #         print("Fila vazia — caminho completo ou BFS não foi executada.")
     def movimentar(self):
-        """
-        Move o agente para o próximo passo baseado na fila da BFS.
-        """
-
-        if self.bfs.caminho:
-          no = self.bfs.caminho.popleft()
+      """
+      Move o agente para o próximo passo baseado na pilha da DFS.
+      """
+      if self.dfs.caminho:
+          no = self.dfs.caminho.pop()  # DFS utiliza pilha: LIFO
           self.linha_intencao, self.coluna_intencao = no.pos
-          self.bfs.caminho_percorrido.append(no.pos)
-
-        else:
-            print("Fila vazia — caminho completo ou BFS não foi executada.")
-
+          # self.dfs.caminho_percorrido.append(no.pos)
+      else:
+          print("Pilha vazia — caminho completo ou DFS não foi executada.")
 
     def pintar(self, tela):
       """
