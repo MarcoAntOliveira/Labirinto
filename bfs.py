@@ -11,8 +11,9 @@ class BFS:
         self.tree = BinaryTree()
         self.saida = None
         self.posicao = list()
-
+        self.caminho_percorrido = []
         self.caminho = deque()
+        self.custo = 0
 
     def adicionar_rotas(self, novo_no, linha, coluna):
         """
@@ -47,11 +48,11 @@ class BFS:
         """
         Verifica se a posição atual é a saída
         """
-        if 0 <= linha < len(maze) and 0 <= coluna < len(maze[0]):
-            return maze[linha][coluna] == 3
+        if maze[linha][coluna] == 3:
+            return True
         return False
 
-    def decidir(self, no: No):
+    def decidir(self, no:No):
         """
         Decide o próximo movimento baseado nos filhos não visitados
         """
@@ -65,22 +66,26 @@ class BFS:
             return no.up_child.pos
         return None
 
-    def mover(self, no: No, linha, coluna):
-        if no.right_child:
-            return [linha, coluna + 1]
-        if no.down_child:
-            return [linha + 1, coluna]
-        if no.left_child:
-            return [linha, coluna - 1]
-        if no.up_child:
-            return [linha - 1, coluna]
-        return None  # Garante que algo seja retornado sempre
+    def voltar(self, no: No):
+        if no is None:
+            return None  # segurança contra chamadas inválidas
+
+        if self.decidir(no) is None:
+            if no.right_child:
+                return no.right_child.pos
+            if no.down_child:
+                return no.down_child.pos
+            if no.left_child:
+                return no.left_child.pos
+            if no.up_child:
+                return no.up_child.pos
+        return None  # caso contrário, retorna None
 
     def executar(self):
         linha, coluna = self.inicio
         print(f"{maze[linha][coluna]}")
         print(f"Início: {linha}, {coluna}")
-        self.visitados.add((linha, coluna))
+
         raiz = No((linha, coluna))
         self.tree.root = raiz
 
@@ -89,15 +94,19 @@ class BFS:
         self.caminho.append(raiz)
         no_atual = raiz
         self.adicionar_rotas(no_atual, linha, coluna)
-
+        self.custo += 1
 
         while fila:
             atual = fila.popleft()  # Tira o primeiro item da self. fila
             linha, coluna = atual.pos
+            # if (linha, coluna) in self.visitados:
+            #   continue  # Já visitou, ignora
+            self.visitados.add((linha, coluna))
 
 
             if self.checar_final(coluna, linha):
                 self.saida = atual
+                print("Achei a sáida")
                 break
 
             # Expande as rotas para o próximo nó
@@ -108,21 +117,62 @@ class BFS:
                 if child:
                     fila.append(child)
                     self.caminho.append(child)
+                    self.custo += 1
 
+    # def executar(self):
+    #   linha, coluna = self.inicio
+    #   print(f"{maze[linha][coluna]}")
+    #   print(f"Início: {linha}, {coluna}")
+
+    #   raiz = No((linha, coluna))
+    #   self.tree.root = raiz
+
+    #   fila = deque()
+    #   fila.append(raiz)
+    #   self.caminho.append(raiz)
+    #   self.visitados.add((linha, coluna))  # <-- MARCA AQUI!
+
+    #   while fila:
+    #       atual = fila.popleft()
+    #       linha, coluna = atual.pos
+
+    #       if self.checar_final(coluna, linha):
+    #           self.saida = atual
+    #           print("Achei a saída!")
+    #           break
+
+    #       self.adicionar_rotas(atual, linha, coluna)
+
+    #       for child in [atual.left_child, atual.right_child, atual.up_child, atual.down_child]:
+    #           if child and child.pos not in self.visitados:
+    #               fila.append(child)
+    #               self.caminho.append(child)
+    #               self.visitados.add(child.pos)  # <-- MARCA AQUI TAMBÉM!
 
 
 # ==================== MAIN ====================
+# def main():
+#     linha_inicial = 1
+#     coluna_inicial = 1
+#     bfs = BFS(maze, linha_inicial, coluna_inicial)
+#     bfs.executar()
+
+
+#     # if bfs.saida:
+#     #     bfs.reconstruir_caminho(bfs.saida)
+#     # else:
+#     #     print("Saída não encontrada no labirinto.")
 def main():
-    linha_inicial = 1
-    coluna_inicial = 1
-    bfs = BFS(maze, linha_inicial, coluna_inicial)
-    bfs.executar()
+    no_teste = No((1, 1))
+    no_teste.right_child = No((1, 2))
+    no_teste.down_child = No((2, 1))
+    no_teste.left_child = None
+    no_teste.up_child = None
 
-
-    # if bfs.saida:
-    #     bfs.reconstruir_caminho(bfs.saida)
-    # else:
-    #     print("Saída não encontrada no labirinto.")
+    bfs = BFS(maze, 1, 1)
+    bfs.visitados.update([(1,2), (2,1)])  # Marca todos como já visitados
+    retorno = bfs.voltar(no_teste)
+    print("voltar() retornou:", retorno)
 
 if __name__ == "__main__":
     main()

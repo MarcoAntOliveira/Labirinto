@@ -1,7 +1,7 @@
 import random
 
-WIDTH = 11  # Width of the maze (must be odd).
-HEIGHT = 11  # Height of the maze (must be odd).
+WIDTH = 21  # Width of the maze (must be odd).
+HEIGHT = 21  # Height of the maze (must be odd).
 assert WIDTH % 2 == 1 and WIDTH >= 3
 assert HEIGHT % 2 == 1 and HEIGHT >= 3
 SEED = 1
@@ -13,6 +13,7 @@ MARK = '@'
 WALL = 1  # Character 2 is '█'
 START = 2
 END = 3
+PASSED = 4
 NORTH, SOUTH, EAST, WEST = 'n', 's', 'e', 'w'
 
 # Create the filled-in maze data structure to start:

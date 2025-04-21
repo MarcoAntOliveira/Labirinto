@@ -9,7 +9,7 @@ class Cenario:
     def __init__(self, tamanho, pac) -> None:
         self.pacman = pac
         self.tamanho = tamanho
-        self.matriz = self.maze()
+        self.matriz = maze
         self.tree = BinaryTree()
 
     def pintar_coluna(self, tela, numero_linha, linha):
@@ -25,8 +25,8 @@ class Cenario:
                pygame.draw.circle(tela, VERDE, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
             elif coluna == 3:  # fim
                pygame.draw.circle(tela, ROSA, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
-            elif [numero_linha, numero_coluna] in self.tree.searched :
-               pygame.draw.circle(tela, VERMELHO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
+            elif (numero_linha, numero_coluna) in self.bfs.caminho_percorrido:
+              pygame.draw.circle(tela, VERMELHO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
             else:
                pygame.draw.circle(tela, AMARELO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
 
@@ -44,70 +44,23 @@ class Cenario:
           if self.matriz[lin][col] != 1:
               self.pacman.aceitar_movimento()
 
-    def maze(self):
-        wall_density=0.15
-        width, height = 40, 30
-        maze = [[0 for _ in range(width)] for _ in range(height)]
-
-        num_cells = width * height
-        num_walls = int(num_cells * wall_density)
-
-        wall_positions = random.sample(range(num_cells), num_walls)
-        pills_positions = random.sample(range(num_cells), num_walls)
-
-
-        for pos in wall_positions:
-            x = pos % width
-            y = pos // width
-            maze[y][x] = 1
-
-        for pos in pills_positions:
-            if pos in wall_positions:
-                pass
-            x_pills = pos % width
-            y_pills = pos // width
-            maze[y_pills][x_pills] = 1
-
-        # Criar bordas do labirinto
-        for x in range(width):
-            maze[0][x] = 1
-            maze[height-1][x] = 1
-        for y in range(height):
-            maze[y][0] = 1
-            maze[y][width-1] = 1
-
-        return maze
-
-
-
-
 class Pacman:
     def __init__(self):
         # Inicializa o Pacman na posição de início (2,2)
         self.linha = 1
         self.coluna = 1
         self.bfs = BFS(maze, self.linha, self.coluna)
-        self.centro_x = screen.get_width() // 11
-        self.centro_y = screen.get_height() // 11
+        self.centro_x = screen.get_width() // len(maze)
+        self.centro_y = screen.get_height() // len(maze)
 
         self.tamanho = screen.get_width()//30
         self.raio = self.tamanho // 2
 
         self.bfs.executar()  # Executa o BFS para encontrar o caminho
-
-        self.vel_x = 0
-        self.vel_y = 0
         self.coluna_intencao = self.coluna
         self.linha_intencao = self.linha
 
-    def calcular_regras(self):
-        col = int(self.coluna_intencao)
-        lin = int(self.linha_intencao)
-        # Verifica se a posição está dentro dos limites do labirinto
-        if 0 <= col < len(maze[0]) and 0 <= lin < len(maze):
-            # Verifica se não é parede (1)
-            if maze[lin][col] != 1:
-                self.aceitar_movimento()
+
 
     def movimentar(self):
         """
@@ -117,7 +70,7 @@ class Pacman:
         if self.bfs.caminho:
           no = self.bfs.caminho.popleft()
           self.linha_intencao, self.coluna_intencao = no.pos
-          print(self.linha_intencao, self.coluna_intencao)
+          self.bfs.caminho_percorrido.append(no.pos)
 
         else:
             print("Fila vazia — caminho completo ou BFS não foi executada.")
@@ -153,7 +106,17 @@ class Pacman:
         """
         self.linha = self.linha_intencao
         self.coluna = self.coluna_intencao
-        print(self.linha, self.coluna)
+        print(f"se movendo para linha{self.linha} e coluna {self.coluna}")
+        pygame.time.delay(10)
+
+    def calcular_regras(self):
+      col = int(self.coluna_intencao)
+      lin = int(self.linha_intencao)
+      # Verifica se a posição está dentro dos limites do labirinto
+      if 0 <= col < len(maze[0]) and 0 <= lin < len(maze):
+          # Verifica se não é parede (1)
+          if maze[lin][col] != 1:
+              self.aceitar_movimento()
 
 
 screen  = pygame.display.set_mode((800, 600), 0)
