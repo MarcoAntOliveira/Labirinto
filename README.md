@@ -1,7 +1,7 @@
 # Labirinto - Projeto de Busca em Labirinto
 
 Este projeto implementa um jogo de labirinto onde o Pacman deve encontrar o caminho da entrada até a saída usando algoritmos de busca em largura (BFS) e profundidade (DFS).
-![execução do jogo](<images/image copy.png>)
+![execução do jogo](images/image.png)
 
 ## Estrutura do Projeto
 

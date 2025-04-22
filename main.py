@@ -4,7 +4,9 @@ from tree import *
 
 def main():
     pygame.init()
+   
     screen = pygame.display.set_mode((800, 600), 0)
+
     pacman = Pacman()
     cenario = Cenario(600 // len(maze), pacman)
 

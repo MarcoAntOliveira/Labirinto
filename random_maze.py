@@ -1,7 +1,9 @@
 import random
 
-WIDTH = 21  # Width of the maze (must be odd).
-HEIGHT = 21  # Height of the maze (must be odd).
+ # 23x23 enquadramento do pcaman fica perfeito
+WIDTH = 23  # Width of the maze (must be odd).
+HEIGHT = 23  # Height of the maze (must be odd).
+
 assert WIDTH % 2 == 1 and WIDTH >= 3
 assert HEIGHT % 2 == 1 and HEIGHT >= 3
 SEED = 1

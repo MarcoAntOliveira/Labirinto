@@ -1,12 +1,13 @@
 from random_maze import *
 from collections import deque
 class No:
-    def __init__(self, value, left=None, right=None, up=None, down=None):
+    def __init__(self, value, left=None, right=None, up=None, down=None, pai = None):
         self.pos = tuple(value)
         self.left_child = left
         self.right_child = right
         self.up_child = up
         self.down_child = down
+        self.pai = pai
 
 class BinaryTree:
           def __init__(self):

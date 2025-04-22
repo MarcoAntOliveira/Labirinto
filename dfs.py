@@ -9,27 +9,29 @@ class DFS:
         self.visitados = set()
         self.tree = BinaryTree()
         self.saida = None
-        self.caminho = []
+        self.caminho = self.reconstruir_caminho()
+
         self.pilha_caminho = []
         self.custo = 0
 
+
     def adicionar_rotas(self, no, linha, coluna):
-        # Mesmo princípio do BFS
+  
         # Esquerda
         if coluna - 1 >= 0 and self.maze[linha][coluna - 1] != 1 and (linha, coluna - 1) not in self.visitados:
-            no.left_child = No((linha, coluna - 1))
+            no.left_child = No((linha, coluna - 1), no)
 
         # Direita
         if coluna + 1 < len(self.maze[0]) and self.maze[linha][coluna + 1] != 1 and (linha, coluna + 1) not in self.visitados:
-            no.right_child = No((linha, coluna + 1))
+            no.right_child = No((linha, coluna + 1), no)
 
         # Cima
         if linha - 1 >= 0 and self.maze[linha - 1][coluna] != 1 and (linha - 1, coluna) not in self.visitados:
-            no.up_child = No((linha - 1, coluna))
+            no.up_child = No((linha - 1, coluna),no)
 
         # Baixo
         if linha + 1 < len(self.maze) and self.maze[linha + 1][coluna] != 1 and (linha + 1, coluna) not in self.visitados:
-            no.down_child = No((linha + 1, coluna))
+            no.down_child = No((linha + 1, coluna), no)
 
     def checar_final(self, coluna, linha):
         return self.maze[linha][coluna] == 3
@@ -51,6 +53,9 @@ class DFS:
             if self.checar_final(coluna, linha):
                 self.saida = atual
                 print("Saída encontrada!")
+                caminho = self.reconstruir_caminho()
+                print("Caminho da solução:", caminho)
+                print("Custo real:", len(caminho) - 1)  # -1 pois o primeiro nó é o inicial
                 break
 
             self.adicionar_rotas(atual, linha, coluna)
@@ -60,3 +65,11 @@ class DFS:
                 if child and child.pos not in self.visitados:
                     pilha.append(child)
                     self.visitados.add(child.pos)
+    def reconstruir_caminho(self):
+      caminho = []
+      atual = self.saida
+      while atual:
+          caminho.append(atual.pos)
+          atual = atual.pai
+      caminho.reverse()
+      return caminho

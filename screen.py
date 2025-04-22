@@ -3,39 +3,44 @@ from random_maze import maze
 from bfs import BFS
 from tree import WIDTH, HEIGHT, BinaryTree
 from colors import *
-import random
+
 from dfs import DFS
 
+pygame.font.init()
+fonte = pygame.font.SysFont("arial", 35, True, False)
 class Cenario:
     def __init__(self, tamanho, pac) -> None:
         self.pacman = pac
         self.tamanho = tamanho
         self.matriz = maze
-        self.pontos = 0
 
-
+    def pintar_pontos(self, tela):
+      pontos_x = 22 * self.tamanho
+      img_pontos = fonte.render(f"Score: {self.pacman.pontos} ", True, VERMELHO)
+      tela.blit(img_pontos, (pontos_x, 10) )
 
     def pintar_coluna(self, tela, numero_linha, linha):
-        for numero_coluna, coluna in enumerate(linha):
-            x = numero_coluna * self.tamanho
-            y = numero_linha * self.tamanho
+      for numero_coluna, coluna in enumerate(linha):
+          x = numero_coluna * self.tamanho
+          y = numero_linha * self.tamanho
+          pos = (numero_linha, numero_coluna)
 
-            if coluna == 1:  # parede
-               pygame.draw.rect(tela, AZUL, (x, y, self.tamanho, self.tamanho), 0)
-            elif coluna == 0:  # caminho vazio
-               pygame.draw.circle(tela, AMARELO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
-            elif coluna == 2:  # início
-               pygame.draw.circle(tela, VERDE, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
-            elif coluna == 3:  # fim
-               pygame.draw.circle(tela, ROSA, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
-            elif (numero_linha, numero_coluna) in self.pacman.trilha:
-              pygame.draw.circle(tela, VERMELHO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
-            else:
-               pygame.draw.circle(tela, AMARELO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
+          if coluna == 1:  # parede
+              pygame.draw.rect(tela, AZUL, (x, y, self.tamanho, self.tamanho), 0)
+          elif pos in self.pacman.trilha:  # trilha do pacman (antes do else!)
+              pygame.draw.circle(tela, VERMELHO, (x + self.tamanho / 2, y + self.tamanho / 2), self.tamanho // 10, 0)
+          elif coluna == 2:  # início
+              pygame.draw.circle(tela, VERDE, (x + self.tamanho / 2, y + self.tamanho / 2), self.tamanho // 10, 0)
+          elif coluna == 3:  # fim
+              pygame.draw.circle(tela, ROSA, (x + self.tamanho / 2, y + self.tamanho / 2), self.tamanho // 10, 0)
+          elif coluna == 0:  # caminho vazio
+              pygame.draw.circle(tela, AMARELO, (x + self.tamanho / 2, y + self.tamanho / 2), self.tamanho // 10, 0)
 
     def pintar(self, tela):
         for numero_linha, linha in enumerate(self.matriz):
             self.pintar_coluna(tela, numero_linha, linha)
+
+        self.pintar_pontos(tela)
 
 
     def calcular_regras(self):
@@ -65,6 +70,7 @@ class Pacman:
         self.coluna_intencao = self.coluna
         self.linha_intencao = self.linha
         self.trilha = []
+        self.pontos = 0
 
 
 
@@ -76,19 +82,20 @@ class Pacman:
     #     if self.bfs.caminho:
     #       no = self.bfs.caminho.popleft()
     #       self.linha_intencao, self.coluna_intencao = no.pos
-    #       self.bfs.caminho_percorrido.append(no.pos)
+    #       self.trilha.append(no.pos)
+    #       self.pontos += 1
 
     #     else:
     #         print("Fila vazia — caminho completo ou BFS não foi executada.")
+
     def movimentar(self):
       if self.dfs.caminho:
-          no = self.dfs.caminho.pop()
+          no = self.dfs.caminho.pop(0)  # ordem correta: origem → destino
           self.trilha.append(no.pos)
-        
           self.linha_intencao, self.coluna_intencao = no.pos
-
+          self.pontos += 1
       else:
-          print("Pilha vazia — caminho completo ou DFS não foi executada.")
+          print("Caminho completo ou DFS não foi executada.")
 
     def pintar(self, tela):
       """
