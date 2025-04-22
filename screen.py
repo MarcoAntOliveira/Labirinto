@@ -11,6 +11,8 @@ class Cenario:
         self.pacman = pac
         self.tamanho = tamanho
         self.matriz = maze
+        self.pontos = 0
+
 
 
     def pintar_coluna(self, tela, numero_linha, linha):
@@ -26,7 +28,7 @@ class Cenario:
                pygame.draw.circle(tela, VERDE, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
             elif coluna == 3:  # fim
                pygame.draw.circle(tela, ROSA, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
-            elif (numero_linha, numero_coluna) in self.bfs.caminho_percorrido:
+            elif (numero_linha, numero_coluna) in self.pacman.trilha:
               pygame.draw.circle(tela, VERMELHO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
             else:
                pygame.draw.circle(tela, AMARELO, (x + self.tamanho/2, y + self.tamanho/2), self.tamanho//10, 0)
@@ -59,9 +61,10 @@ class Pacman:
         self.raio = self.tamanho // 2
 
         # self.bfs.executar()  # Executa o BFS para encontrar o caminho
-        self.dfs.executar()  # Executa o BFS para encontrar o caminho
+        self.dfs.executar()  # Executa o DFS para encontrar o caminho
         self.coluna_intencao = self.coluna
         self.linha_intencao = self.linha
+        self.trilha = []
 
 
 
@@ -78,13 +81,12 @@ class Pacman:
     #     else:
     #         print("Fila vazia — caminho completo ou BFS não foi executada.")
     def movimentar(self):
-      """
-      Move o agente para o próximo passo baseado na pilha da DFS.
-      """
       if self.dfs.caminho:
-          no = self.dfs.caminho.pop()  # DFS utiliza pilha: LIFO
+          no = self.dfs.caminho.pop()
+          self.trilha.append(no.pos)
+        
           self.linha_intencao, self.coluna_intencao = no.pos
-          # self.dfs.caminho_percorrido.append(no.pos)
+
       else:
           print("Pilha vazia — caminho completo ou DFS não foi executada.")
 

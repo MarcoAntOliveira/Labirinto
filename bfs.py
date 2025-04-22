@@ -14,6 +14,8 @@ class BFS:
         self.caminho_percorrido = []
         self.caminho = deque()
         self.custo = 0
+        self.executado = False
+
 
     def adicionar_rotas(self, novo_no, linha, coluna):
         """
@@ -82,6 +84,8 @@ class BFS:
         return None  # caso contrário, retorna None
 
     def executar(self):
+        if self.executado:
+          return  # Já executou uma vez, não faz nada
         linha, coluna = self.inicio
         print(f"{maze[linha][coluna]}")
         print(f"Início: {linha}, {coluna}")
