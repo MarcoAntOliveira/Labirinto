@@ -2,7 +2,7 @@ import pygame
 from random_maze import maze
 from bfs import BFS
 from tree import WIDTH, HEIGHT, BinaryTree
-from cores import *
+from colors import *
 import random
 from dfs import DFS
 
@@ -47,7 +47,7 @@ class Cenario:
 
 class Pacman:
     def __init__(self):
-        # Inicializa o Pacman na posição de início (2,2)
+        # Inicializa o Pacman na posição de início (1,1)
         self.linha = 1
         self.coluna = 1
         # self.bfs = BFS(maze, self.linha, self.coluna)

@@ -1,6 +1,7 @@
 # Labirinto - Projeto de Busca em Labirinto
 
 Este projeto implementa um jogo de labirinto onde o Pacman deve encontrar o caminho da entrada até a saída usando algoritmos de busca em largura (BFS) e profundidade (DFS).
+![execução do jogo](<images/image copy.png>)
 
 ## Estrutura do Projeto
 
@@ -145,51 +146,3 @@ por diante.
 -  Não havendo mais sucessores, a busca retorna à
 próxima profundidade acima que não foi
 explorada.
-
-# Pacman
-Este repositório é dedicado ao desenvolvimento do clássico jogo Pacman, com o objetivo de explorar conceitos de programação de jogos e interação com bibliotecas gráficas.
-
-## Bibliotecas Utilizadas
-Pygame: Biblioteca principal utilizada para criar e gerenciar a interface gráfica, eventos, e animações do jogo.
-Classes Implementadas
-
-## Cenario
-Responsável por gerenciar o layout do labirinto, incluindo o desenho das paredes e o controle das regras do jogo.
-
-### Métodos Principais:
-#### pintar_coluna
-Desenha as colunas do labirinto na tela principal com base no número de linhas especificado.
-
-#### processar_eventos
-Controla a movimentação do personagem, utilizando os eventos capturados pela biblioteca Pygame.
-
-#### maze
-Gera labirintos com paredes aleatórias, proporcionando novos desafios a cada execução.
-
-#### calcular
-Determina se o personagem atingiu uma parede do labirinto, impedindo movimentos inválidos.
-
-## Pacman
-Classe responsável por gerenciar as ações e comportamentos do personagem principal.
-
-#### calcular
-*determinar os movimentos possiveis que o personagem pode realizar*
-
-
-
-```python
-def calcular_regras(self):
-
-col = self.pacman.coluna_intencao
-
-lin = self.pacman.linha_intencao
-
-if 0 <= col <= 5 and 0 <= lin <= 5:
-
-if self.matriz[lin][col] != 2:
-
-self.pacman.aceitar_movimento()
-```
-
-
-### Class BFS
